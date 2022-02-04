@@ -81,12 +81,10 @@ export class ArButtonComponent implements OnInit {
 
     } else {
 
-      const message:HTMLAnchorElement = document.querySelector('#msgAr')|| document.createElement('a');
-
-      message.innerHTML = (!window.isSecureContext)
+      button.textContent = (!window.isSecureContext)
         ? 'WEBXR NEEDS HTTPS' : 'WEBXR NOT AVAILABLE';
 
-      return message;
+      return button;
 
     }
 
