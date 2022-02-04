@@ -1,0 +1,11 @@
+.textAlign {
+  text-align: center;
+}
+
+.btn-radius {
+  border-radius: 5px;
+}
+
+.btn-padding {
+  padding:8px 20px 8px 20px;
+}
