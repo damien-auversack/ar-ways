@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CubeComponent } from './cube.component';
+import { ArSceneComponent } from './ar-scene.component';
 
-describe('CubeComponent', () => {
-  let component: CubeComponent;
-  let fixture: ComponentFixture<CubeComponent>;
+describe('ArSceneComponent', () => {
+  let component: ArSceneComponent;
+  let fixture: ComponentFixture<ArSceneComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CubeComponent ]
+      declarations: [ ArSceneComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CubeComponent);
+    fixture = TestBed.createComponent(ArSceneComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
