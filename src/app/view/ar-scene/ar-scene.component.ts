@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
 import {ArButtonComponent} from "../ar-button/ar-button.component";
+import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 
 @Component({
   selector: 'app-ar-scene',
@@ -32,6 +33,11 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+
+    let objLoader = new OBJLoader;
+    objLoader.load('assets/arrow.obj', (object) => {
+      this.scene.add(object);
+    });
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);

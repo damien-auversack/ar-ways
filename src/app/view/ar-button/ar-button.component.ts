@@ -30,7 +30,6 @@ export class ArButtonComponent implements OnInit {
 
         await renderer.xr.setSession(session);
         button.textContent = 'STOP AR';
-        sessionInit.domOverlay.root.style.display = '';
         currentSession = session;
       }
 
