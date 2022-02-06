@@ -24,20 +24,37 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.init();
-    this.animate();
   }
 
-  private geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
+  // private geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
 
-  init() {
+  loadObj() {
+    return new Promise<THREE.Group>(resolve => {
+      let objLoader = new OBJLoader;
+      objLoader.load('assets/arrow.obj', (object) => {
+        resolve(object);
+      });
+
+    });
+
+  }
+
+  async init() {
+
+    let arrow: THREE.Group;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
+    this.camera.position.z = -30;
 
-    let objLoader = new OBJLoader;
-    objLoader.load('assets/arrow.obj', (object) => {
-      this.scene.add(object);
-    });
+    arrow = await this.loadObj();
+
+
+
+    /*this.scene.add(this.arrow);*/
+    /*
+    this.arrow.position.set(0, 0, 0);*/
+    /*this.arrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);*/
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -51,11 +68,19 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.arButton.createButton(this.renderer);
 
     const onSelect = () => {
-      const material = new THREE.MeshPhongMaterial({color: 0xffffff * Math.random()});
+      /*const material = new THREE.MeshPhongMaterial({color: 0xffffff * Math.random()});
       const mesh = new THREE.Mesh(this.geometry, material);
       mesh.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-      mesh.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
-      this.scene.add(mesh);
+      mesh.quaternion.setFromRotationMatrix(this.controller.matrixWorld);*/
+      let cloneArrow = arrow.clone();
+
+      cloneArrow.children.forEach(child => {
+        child.rotation.set(0,Math.PI*0.45,0);
+      });
+
+      cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
+      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
+      this.scene.add(cloneArrow);
     }
 
     this.controller = this.renderer.xr.getController(0);
@@ -68,6 +93,8 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
       that.renderer.setSize(window.innerWidth, window.innerHeight);
     });
+
+    await this.animate();
   }
 
   animate() {
