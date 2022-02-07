@@ -25,7 +25,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.init();
   }
-
+  //Test
   // private geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
 
   loadObj() {
