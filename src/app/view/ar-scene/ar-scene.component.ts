@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
 import {ArButtonComponent} from "../ar-button/ar-button.component";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
+import {Matrix4} from "three";
 
 @Component({
   selector: 'app-ar-scene',
@@ -55,7 +56,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
 
   async init() {
-
     let arrow: THREE.Group;
 
     this.scene = new THREE.Scene();
@@ -82,8 +82,40 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       cloneArrow.children.forEach(child => {
         child.rotation.set(0,1.57,0);
       });
+
+      // let tmp = this.controller.matrixWorld.setFr
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
+
+      let matrix4 = this.controller.matrixWorld;
+      console.log(this.controller.matrixWorld)
+      matrix4.elements[1] = 0;
+      matrix4.elements[5] = 0;
+      matrix4.elements[9] = 0;
+      matrix4.elements[13] = 0;
+
+      // matrix4.elements[3] = 0;
+      // matrix4.elements[7] = 0;
+      // matrix4.elements[11] = 0;
+      // matrix4.elements[15] = 0;
+
+
+      // for (let i = 0; i < matrix4.elements.length; i++) {
+      //   if((i-2)%4==0) {
+      //     matrix4.elements[i] = 0;
+      //   }
+      //
+      //   console.log(matrix4.elements[i]);
+      // }
+      // matrix4. x = 0;
+      // matrix4.y = 0;
+      // matrix4.z = 0;
+      // matrix4.w = 0;
+      cloneArrow.quaternion.setFromRotationMatrix(matrix4);
+
+      // let matrix4 = new Matrix4();
+      // matrix4.makeRotationZ(this.controller.matrixWorld.z);
+      // cloneArrow.quaternion.setFromRotationMatrix(matrix4);
+
       this.scene.add(cloneArrow);
     }
 
