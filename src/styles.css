@@ -2,6 +2,10 @@ body {
   background-color: floralwhite;
 
 }
+
+.test {
+  width: 250px!important;
+}
 .borderTest {
   border: solid black 1px;
 }
