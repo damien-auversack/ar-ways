@@ -32,7 +32,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       {x: 0.07535369955003261, y: -0.049116116389632224, z: -1.8304659843444824}];
 
     for(let elt of positions) {
-      console.log(elt);
       let cloneArrow = arrow.clone();
 
       cloneArrow.children.forEach(child => {
@@ -84,6 +83,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
         child.rotation.set(0,1.57,0);
       });
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
+      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
       this.scene.add(cloneArrow);
     }
 
