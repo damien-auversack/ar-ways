@@ -25,7 +25,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.init();
   }
-  //Test
   // private geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
 
   loadObj() {
@@ -75,7 +74,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       let cloneArrow = arrow.clone();
 
       cloneArrow.children.forEach(child => {
-        child.rotation.set(0,1.5,0);
+        child.rotation.set(0.50,1.57,0);
       });
 
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
