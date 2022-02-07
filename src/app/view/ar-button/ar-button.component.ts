@@ -37,14 +37,14 @@ export class ArButtonComponent implements OnInit {
 
         currentSession.removeEventListener('end', onSessionEnded);
 
-        button.textContent = 'START AR';
+        button.textContent = 'AR';
         sessionInit.domOverlay.root.style.display = 'none';
 
         currentSession = null;
       }
 
       button.style.display = '';
-      button.textContent = 'START AR';
+      button.textContent = 'AR';
 
       button.onclick = function () {
 

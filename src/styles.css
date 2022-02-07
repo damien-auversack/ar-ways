@@ -1,11 +1,15 @@
 body {
   background-color: floralwhite;
-
 }
 
-.test {
-  width: 250px!important;
+.btn-width {
+  width: 150px!important;
 }
+
+.btn-height {
+  height: 150px!important;
+}
+
 .borderTest {
   border: solid black 1px;
 }
@@ -19,7 +23,7 @@ body {
 }
 
 .btn-radius {
-  border-radius: 5px;
+  border-radius: 50%;
 }
 
 .btn-padding {
@@ -40,7 +44,11 @@ body {
 }
 
 .btn-bg-color{
-  background-color: chocolate;
+  background-color: cornflowerblue;
+}
+
+.button-no-border {
+  border: none;
 }
 
 .btn-color{
@@ -49,4 +57,26 @@ body {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.font-weight {
+  font-size: xxx-large;
+  font-family: "Eras Bold ITC";
+  font-weight: bold;
+}
+
+.p-top-20 {
+  padding-top: 20px;
+}
+
+.p-top-60 {
+  padding-top: 60px;
+}
+
+.title-size {
+  font-size: 80px;
+}
+
+.subtitle-size {
+  font-size: 35px;
 }
