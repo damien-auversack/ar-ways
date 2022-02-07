@@ -25,7 +25,25 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.init();
   }
-  // private geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
+
+  initObjectsInMap(arrow: THREE.Group) {
+    let positions = [{x: 0.04034972786903381, y: -0.18314682021737097, z: -0.5702444970607757},
+      {x: 0.08605100065469742, y: 0.0021906256675720236, z: -1.2070549786090852},
+      {x: 0.07535369955003261, y: -0.049116116389632224, z: -1.8304659843444824}];
+
+    for(let elt of positions) {
+      console.log(elt);
+      let cloneArrow = arrow.clone();
+
+      cloneArrow.children.forEach(child => {
+        child.rotation.set(0,1.57,0);
+      });
+
+      cloneArrow.position.set(elt.x,elt.y, elt.z);
+
+       this.scene.add(cloneArrow);
+    }
+  }
 
   loadObj() {
     return new Promise<THREE.Group>(resolve => {
@@ -35,7 +53,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       });
 
     });
-
   }
 
   async init() {
@@ -48,12 +65,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
     arrow = await this.loadObj();
 
-
-
-    /*this.scene.add(this.arrow);*/
-    /*
-    this.arrow.position.set(0, 0, 0);*/
-    /*this.arrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);*/
+    this.initObjectsInMap(arrow);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -67,18 +79,11 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.arButton.createButton(this.renderer);
 
     const onSelect = () => {
-      /*const material = new THREE.MeshPhongMaterial({color: 0xffffff * Math.random()});
-      const mesh = new THREE.Mesh(this.geometry, material);
-      mesh.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-      mesh.quaternion.setFromRotationMatrix(this.controller.matrixWorld);*/
       let cloneArrow = arrow.clone();
-
       cloneArrow.children.forEach(child => {
         child.rotation.set(0,1.57,0);
       });
-
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
       this.scene.add(cloneArrow);
     }
 
