@@ -75,7 +75,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       let cloneArrow = arrow.clone();
 
       cloneArrow.children.forEach(child => {
-        child.rotation.set(0,Math.PI*0.45,0);
+        child.rotation.set(0,1.5,0);
       });
 
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
