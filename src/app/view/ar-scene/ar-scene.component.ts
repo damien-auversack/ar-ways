@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
 import {ArButtonComponent} from "../ar-button/ar-button.component";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
+import {Matrix4} from "three";
 
 @Component({
   selector: 'app-ar-scene',
@@ -55,7 +56,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
 
   async init() {
-
     let arrow: THREE.Group;
 
     this.scene = new THREE.Scene();
@@ -80,10 +80,16 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     const onSelect = () => {
       let cloneArrow = arrow.clone();
       cloneArrow.children.forEach(child => {
-        child.rotation.set(0,1.57,0);
+        child.rotation.set(0,0.5*Math.PI,0.1*Math.PI);
       });
+
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
+
+      let matrix4 = this.controller.matrixWorld;
+      cloneArrow.quaternion.setFromRotationMatrix(matrix4);
+
+      // cloneArrow.quaternion.setFromRotationMatrix(matrix4);
+
       this.scene.add(cloneArrow);
     }
 
