@@ -1,9 +1,7 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as THREE from "three";
-// import {ArButtonComponent} from "../ar-button/ar-button.component";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
-import {Matrix4} from "three";
 
 @Component({
   selector: 'app-ar-scene',
@@ -13,7 +11,7 @@ import {Matrix4} from "three";
 export class ArSceneComponent implements OnInit, AfterViewInit {
 
   // @ViewChild(ArButtonComponent, {static: true})
-  // arButton!: ArButtonComponent;
+   arButton!:  HTMLElement;
 
   private camera: any;
   private scene: any;
@@ -117,7 +115,14 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.xr.enabled = true;
 
-    document.body.appendChild(ARButton.createButton(this.renderer));
+    this.arButton = ARButton.createButton(this.renderer);
+
+
+    this.arButton.classList.add(
+    "btn-padding", "font-weight", "button-no-border", "btn-width", "btn-height", "btn-radius", "textAlign", "btn-bottom", "btn-bg-color", "btn-color", "cursor-pointer"
+    );
+
+    document.body.appendChild(this.arButton);
 
     const onSelect = () => {
       let cloneArrow = mark.clone();

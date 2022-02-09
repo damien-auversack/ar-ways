@@ -6,7 +6,6 @@ import { HomepageComponent } from './view/homepage/homepage.component';
 import { ViewComponent } from './view/view.component';
 import { ModelComponent } from './model/model.component';
 import { ArSceneComponent } from './view/ar-scene/ar-scene.component';
-import { ArButtonComponent } from './view/ar-button/ar-button.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +14,6 @@ import { ArButtonComponent } from './view/ar-button/ar-button.component';
     ViewComponent,
     ModelComponent,
     ArSceneComponent,
-    ArButtonComponent
   ],
   imports: [
     BrowserModule
