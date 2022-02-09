@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
-import {ArButtonComponent} from "../ar-button/ar-button.component";
+// import {ArButtonComponent} from "../ar-button/ar-button.component";
+import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
 import {Matrix4} from "three";
 
@@ -11,8 +12,8 @@ import {Matrix4} from "three";
 })
 export class ArSceneComponent implements OnInit, AfterViewInit {
 
-  @ViewChild(ArButtonComponent, {static: true})
-  arButton!: ArButtonComponent;
+  // @ViewChild(ArButtonComponent, {static: true})
+  // arButton!: ArButtonComponent;
 
   private camera: any;
   private scene: any;
@@ -89,7 +90,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
 
   async init() {
-
     let mark: THREE.Group;
     //let arrivalPoint : THREE.Group;
 
@@ -117,7 +117,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.xr.enabled = true;
 
-    this.arButton.createButton(this.renderer);
+    document.body.appendChild(ARButton.createButton(this.renderer));
 
     const onSelect = () => {
       let cloneArrow = mark.clone();
