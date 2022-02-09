@@ -18,6 +18,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   private scene: any;
   private controller: any;
   private renderer: any;
+  private tabObject  : THREE.Group[] = [];
 
   constructor() { }
 
@@ -69,26 +70,42 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     // }
   }
 
-  loadObj() {
+  // objectMenu (objects : THREE.Group[]){
+  //   for (let object of objects){
+  //     let cloneObject = object.clone();
+  //
+  //     this.scene.add(cloneObject);
+  //   }
+  // }
+
+  loadObj(objString : string) {
     return new Promise<THREE.Group>(resolve => {
       let objLoader = new OBJLoader;
-      objLoader.load('assets/mark.obj', (object) => {
+      objLoader.setPath("assets/");
+      objLoader.load(objString, (object) => {
         resolve(object);
       });
-
     });
   }
 
   async init() {
-    let arrow: THREE.Group;
+
+    let mark: THREE.Group;
+    //let arrivalPoint : THREE.Group;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
     this.camera.position.z = -30;
 
-    arrow = await this.loadObj();
+      mark = await this.loadObj("mark.obj");
+    //arrivalPoint = await this.loadObj("arrival_point.obj");
 
-    this.initObjectsInMap(arrow);
+
+    this.tabObject.push(mark);
+    //this.tabObject.push(arrivalPoint);
+
+    this.initObjectsInMap(mark);
+    // this.objectMenu(this.tabObject);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -103,9 +120,9 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.arButton.createButton(this.renderer);
 
     const onSelect = () => {
-      let cloneArrow = arrow.clone();
+      let cloneArrow = mark.clone();
       cloneArrow.children.forEach(child => {
-        child.rotation.set(0.005*Math.PI,Math.PI/2,0);
+        child.rotation.set(0,0,0);
       });
 
       cloneArrow.position.set(0, 0, -0.6).applyMatrix4(this.controller.matrixWorld);
@@ -113,8 +130,8 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       let matrix4 = this.controller.matrixWorld;
       cloneArrow.quaternion.setFromRotationMatrix(matrix4);
 
-      console.log(JSON.stringify(cloneArrow.position));
-      console.log(JSON.stringify(matrix4));
+      // console.log(JSON.stringify(cloneArrow.position));
+      // console.log(JSON.stringify(matrix4));
 
       // let newMatrix4 = new Matrix4();
 
@@ -135,7 +152,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
     this.controller = this.renderer.xr.getController(0);
     this.controller.addEventListener('select', onSelect);
-    this.scene.updateMatrixWorld
     this.scene.add(this.controller);
     let that = this;
     window.addEventListener('resize', () => {
