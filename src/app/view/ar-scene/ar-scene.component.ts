@@ -13,6 +13,8 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   // @ViewChild(ArButtonComponent, {static: true})
    arButton!:  HTMLElement;
 
+
+  private reticle : THREE.Mesh = new THREE.Mesh();
   private camera: any;
   private scene: any;
   private controller: any;
@@ -88,6 +90,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
 
   async init() {
+
     let mark: THREE.Group;
     //let arrivalPoint : THREE.Group;
 
@@ -157,7 +160,17 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
     this.controller = this.renderer.xr.getController(0);
     this.controller.addEventListener('select', onSelect);
+
+    this.reticle =  new THREE.Mesh(
+      new THREE.RingGeometry( 0.15, 0.2, 32 ).rotateX( - Math.PI / 2 ),
+      new THREE.MeshBasicMaterial());
+
+    this.reticle.matrixAutoUpdate = false;
+    this.reticle.visible = false;
+
     this.scene.add(this.controller);
+    this.scene.add(this.reticle);
+
     let that = this;
     window.addEventListener('resize', () => {
       that.camera.aspect = window.innerWidth / window.innerHeight;
@@ -165,15 +178,55 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
       that.renderer.setSize(window.innerWidth, window.innerHeight);
     });
-
     await this.animate();
+    this.renderer.render(this.scene,this.camera);
   }
 
+  render(timestamp : any, frame : any){
+    let hitTestSource = null;
+    let hitTestSourceRequested = false;
+    let that = this;
+
+    if(frame){
+      const referenceSpace = this.renderer.xr.getReferenceSpace();
+      const session = this.renderer.xr.getSession();
+
+      if(hitTestSourceRequested === false){
+        session.requestReferenceSpace('viewer').then((referenceSpace : any ) => {
+          session.requestHitTestSource({space : referenceSpace}).then((source : any) => {
+            hitTestSource = source;
+          })
+        });
+
+        session.addEventListener('end', function () {
+          hitTestSource = null;
+          hitTestSourceRequested = false;
+        })
+        hitTestSourceRequested = true;
+      }
+
+      if(hitTestSource){
+        const hitTestResults = frame.getHitTestResults( hitTestSource );
+
+        if ( hitTestResults.length ) {
+
+          const hit = hitTestResults[ 0 ];
+
+          this.reticle.visible = true;
+          this.reticle.matrix.fromArray( hit.getPose( referenceSpace ).transform.matrix );
+
+        } else {
+
+          this.reticle.visible = false;
+
+        }
+      }
+    }
+
+
+  }
   animate() {
     let that = this;
-    this.renderer.setAnimationLoop(() => {
-      this.renderer.render(that.scene, that.camera);
-    });
+    this.renderer.setAnimationLoop(this.render);
   }
-
 }
