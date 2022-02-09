@@ -47,13 +47,13 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     }
   }
 
-  objectMenu (objects : THREE.Group[]){
-    for (let object of objects){
-      let cloneObject = object.clone();
-
-      this.scene.add(cloneObject);
-    }
-  }
+  // objectMenu (objects : THREE.Group[]){
+  //   for (let object of objects){
+  //     let cloneObject = object.clone();
+  //
+  //     this.scene.add(cloneObject);
+  //   }
+  // }
 
   loadObj(objString : string) {
     return new Promise<THREE.Group>(resolve => {
@@ -82,7 +82,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     //this.tabObject.push(arrivalPoint);
 
     this.initObjectsInMap(arrow);
-    this.objectMenu(this.tabObject);
+    // this.objectMenu(this.tabObject);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
