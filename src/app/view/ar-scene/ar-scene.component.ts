@@ -2,7 +2,8 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import * as THREE from "three";
 import {ArButtonComponent} from "../ar-button/ar-button.component";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
-import {Matrix4} from "three";
+import {FontLoader} from "three/examples/jsm/loaders/FontLoader";
+import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
 
 @Component({
   selector: 'app-ar-scene',
@@ -18,6 +19,7 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   private scene: any;
   private controller: any;
   private renderer: any;
+  private tabObject  : THREE.Group[] = [];
 
   constructor() { }
 
@@ -41,30 +43,46 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
       cloneArrow.position.set(elt.x,elt.y, elt.z);
 
-       this.scene.add(cloneArrow);
+      this.scene.add(cloneArrow);
     }
   }
 
-  loadObj() {
+  // objectMenu (objects : THREE.Group[]){
+  //   for (let object of objects){
+  //     let cloneObject = object.clone();
+  //
+  //     this.scene.add(cloneObject);
+  //   }
+  // }
+
+  loadObj(objString : string) {
     return new Promise<THREE.Group>(resolve => {
       let objLoader = new OBJLoader;
-      objLoader.load('assets/arrow.obj', (object) => {
+      objLoader.setPath("assets/");
+      objLoader.load(objString, (object) => {
         resolve(object);
       });
-
     });
   }
 
   async init() {
+
     let arrow: THREE.Group;
+    //let arrivalPoint : THREE.Group;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
     this.camera.position.z = -30;
 
-    arrow = await this.loadObj();
+    arrow = await this.loadObj("arrow.obj");
+    //arrivalPoint = await this.loadObj("arrival_point.obj");
+
+
+    this.tabObject.push(arrow);
+    //this.tabObject.push(arrivalPoint);
 
     this.initObjectsInMap(arrow);
+    // this.objectMenu(this.tabObject);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -80,16 +98,10 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     const onSelect = () => {
       let cloneArrow = arrow.clone();
       cloneArrow.children.forEach(child => {
-        child.rotation.set(0,0.5*Math.PI,0.1*Math.PI);
+        child.rotation.set(0,1.57,0);
       });
-
       cloneArrow.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-
-      let matrix4 = this.controller.matrixWorld;
-      cloneArrow.quaternion.setFromRotationMatrix(matrix4);
-
-      // cloneArrow.quaternion.setFromRotationMatrix(matrix4);
-
+      cloneArrow.quaternion.setFromRotationMatrix(this.controller.matrixWorld);
       this.scene.add(cloneArrow);
     }
 
