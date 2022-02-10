@@ -7,6 +7,7 @@ import { ViewComponent } from './view/view.component';
 import { ModelComponent } from './model/model.component';
 import { ArSceneComponent } from './view/ar-scene/ar-scene.component';
 import { AppRoutingModule } from './app-routing.module';
+import { PageNotFoundComponent } from './view/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
     HomepageComponent,
     ViewComponent,
     ModelComponent,
-    ArSceneComponent
+    ArSceneComponent,
+    PageNotFoundComponent
 
   ],
   imports: [
