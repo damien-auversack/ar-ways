@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as THREE from "three";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-ar-scene',
@@ -19,9 +20,14 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   private renderer: any;
   private tabObject  : THREE.Group[] = [];
 
-  constructor() { }
+  private role:string | null="user";
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.role = this.route.snapshot.paramMap.get("role");
+
+    console.log(this.role);
   }
   ngAfterViewInit(): void {
     this.init();
@@ -88,6 +94,8 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
   }
 
   async init() {
+
+
     let mark: THREE.Group;
     //let arrivalPoint : THREE.Group;
 
@@ -102,7 +110,10 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     this.tabObject.push(mark);
     //this.tabObject.push(arrivalPoint);
 
-    this.initObjectsInMap(mark);
+    if(this.role != "admin") {
+      this.initObjectsInMap(mark);
+    }
+
     // this.objectMenu(this.tabObject);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -156,7 +167,10 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     // this.scene.add( circle );
 
     this.controller = this.renderer.xr.getController(0);
-    this.controller.addEventListener('select', onSelect);
+    if(this.role == "admin") {
+      this.controller.addEventListener('select', onSelect);
+    }
+
     this.scene.add(this.controller);
     let that = this;
     window.addEventListener('resize', () => {
