@@ -25,8 +25,6 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.role = this.route.snapshot.paramMap.get("role");
-
-    console.log(this.role);
   }
 
   ngAfterViewInit(): void {

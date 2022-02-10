@@ -14,7 +14,8 @@ import { AppRoutingModule } from './app-routing.module';
     HomepageComponent,
     ViewComponent,
     ModelComponent,
-    ArSceneComponent,
+    ArSceneComponent
+
   ],
   imports: [
     BrowserModule,
