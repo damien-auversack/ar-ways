@@ -2,6 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as THREE from "three";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
+import {Material} from "three";
 
 @Component({
   selector: 'app-ar-scene',
@@ -83,6 +84,11 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       let objLoader = new OBJLoader;
       objLoader.setPath("assets/");
       objLoader.load(objString, (object) => {
+        object.traverse((obj) => {
+          if(obj instanceof THREE.Mesh){
+            obj.material.color.setHex(0x8f0000);
+          }
+        })
         resolve(object);
       });
     });
