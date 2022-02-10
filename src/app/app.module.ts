@@ -6,6 +6,7 @@ import { HomepageComponent } from './view/homepage/homepage.component';
 import { ViewComponent } from './view/view.component';
 import { ModelComponent } from './model/model.component';
 import { ArSceneComponent } from './view/ar-scene/ar-scene.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ArSceneComponent } from './view/ar-scene/ar-scene.component';
     ArSceneComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
