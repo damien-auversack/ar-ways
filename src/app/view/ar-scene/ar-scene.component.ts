@@ -48,8 +48,9 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
     let rotationMurRouge = [];
 
     for (let i = 0; i < positionMurRouge.length; i++) {
-      let cloneArrow = arrow.clone();
 
+      let cloneArrow = arrow.clone();
+      cloneArrow.scale.set(0.1,0.1,0.1);
       cloneArrow.position.set(positionMurRouge[i].x,positionMurRouge[i].y, positionMurRouge[i].z);
       // cloneArrow.rotation.set(rotationMurRouge[i]._x,rotationMurRouge[i]._y, rotationMurRouge[i]._z, rotationMurRouge[i]._order);
 
@@ -130,11 +131,12 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
         child.rotation.set(0,0,0);
       });
 
+      cloneArrow.scale.set(0.1,0.1,0.1);
+
       cloneArrow.position.set(0, 0, -0.6).applyMatrix4(this.controller.matrixWorld);
 
       let matrix4 = this.controller.matrixWorld;
       cloneArrow.quaternion.setFromRotationMatrix(matrix4);
-
       // console.log(JSON.stringify(cloneArrow.position));
       // console.log(JSON.stringify(matrix4));
 
