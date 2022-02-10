@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as THREE from "three";
 import {ARButton} from "three/examples/jsm/webxr/ARButton";
 import {OBJLoader} from 'three/examples/jsm/loaders/OBJLoader';
-import {Material} from "three";
 
 @Component({
   selector: 'app-ar-scene',
@@ -11,8 +10,7 @@ import {Material} from "three";
 })
 export class ArSceneComponent implements OnInit, AfterViewInit {
 
-  // @ViewChild(ArButtonComponent, {static: true})
-   arButton!:  HTMLElement;
+  arButton!:  HTMLElement;
 
   private camera: any;
   private scene: any;
@@ -24,14 +22,12 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
   }
+
   ngAfterViewInit(): void {
     this.init();
   }
 
   initObjectsInMap(arrow: THREE.Group) {
-    // let positions = [{x: 0.04034972786903381, y: -0.18314682021737097, z: -0.5702444970607757},
-    //   {x: 0.08605100065469742, y: 0.0021906256675720236, z: -1.2070549786090852},
-    //   {x: 0.07535369955003261, y: -0.049116116389632224, z: -1.8304659843444824}];
 
     let positionMurRouge = [
       {x:0.09322841465473175,y:-0.005425304174423218,z:-0.7347625017166137},
@@ -46,38 +42,15 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
       {x:1.3769175291061402,y:0.09601531624794007,z:-10.622310471534728}
     ];
 
-    let rotationMurRouge = [];
-
     for (let i = 0; i < positionMurRouge.length; i++) {
 
       let cloneArrow = arrow.clone();
       cloneArrow.scale.set(0.1,0.1,0.1);
       cloneArrow.position.set(positionMurRouge[i].x,positionMurRouge[i].y, positionMurRouge[i].z);
-      // cloneArrow.rotation.set(rotationMurRouge[i]._x,rotationMurRouge[i]._y, rotationMurRouge[i]._z, rotationMurRouge[i]._order);
 
       this.scene.add(cloneArrow);
     }
-
-    // for(let elt of positionMurRouge) {
-    //   let cloneArrow = arrow.clone();
-    //
-    //   // cloneArrow.children.forEach(child => {
-    //   //   child.rotation.set(0,1.57,0);
-    //   // });
-    //
-    //   cloneArrow.position.set(elt.x,elt.y, elt.z);
-    //
-    //    this.scene.add(cloneArrow);
-    // }
   }
-
-  // objectMenu (objects : THREE.Group[]){
-  //   for (let object of objects){
-  //     let cloneObject = object.clone();
-  //
-  //     this.scene.add(cloneObject);
-  //   }
-  // }
 
   loadObj(objString : string) {
     return new Promise<THREE.Group>(resolve => {
@@ -96,21 +69,16 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
   async init() {
     let mark: THREE.Group;
-    //let arrivalPoint : THREE.Group;
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 20);
     this.camera.position.z = -30;
 
-      mark = await this.loadObj("mark.obj");
-    //arrivalPoint = await this.loadObj("arrival_point.obj");
-
+    mark = await this.loadObj("mark.obj");
 
     this.tabObject.push(mark);
-    //this.tabObject.push(arrivalPoint);
 
     this.initObjectsInMap(mark);
-    // this.objectMenu(this.tabObject);
 
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     light.position.set(0.5, 1, 0.25);
@@ -143,25 +111,9 @@ export class ArSceneComponent implements OnInit, AfterViewInit {
 
       let matrix4 = this.controller.matrixWorld;
       cloneArrow.quaternion.setFromRotationMatrix(matrix4);
-      // console.log(JSON.stringify(cloneArrow.position));
-      // console.log(JSON.stringify(matrix4));
-
-      // let newMatrix4 = new Matrix4();
-
-      // cloneArrow.quaternion.setFromRotationMatrix(matrix4);
-      // let vector1 = new THREE.Vector3();
-      // console.log(cloneArrow.getWorldPosition(vector1));
-      // let vector2 = new THREE.Vector3();
-      // console.log(cloneArrow.getWorldDirection(vector2));
 
       this.scene.add(cloneArrow);
     }
-
-    // let geometry = new THREE.CylinderGeometry(0, 0.05, 0.2, 32).rotateX(Math.PI / 2);
-    // const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
-    // const circle = new THREE.Mesh( geometry, material );
-    // circle.position.set(0, 0, -0.3).applyMatrix4(this.controller.matrixWorld);
-    // this.scene.add( circle );
 
     this.controller = this.renderer.xr.getController(0);
     this.controller.addEventListener('select', onSelect);
